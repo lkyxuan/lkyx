@@ -1,7 +1,7 @@
 {
   "name": "lkyx",
   "description": "0xmiracle 的个人开发 harness：先搜开源、轻量计划、做完记一笔，按需调用 Superpowers",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "lkyxuan"
   },

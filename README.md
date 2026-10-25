@@ -8,22 +8,52 @@
 
 ## 安装
 
-在 Claude Code 里执行（用户级安装，一次即可，所有项目通用）：
+一条命令装上整套（lkyx + 清单里的第三方插件和 skill），之后自动更新：
 
 ```bash
-# 1. 本仓库
+curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
+```
+
+它会做这些事：
+
+| 工具 | 怎么装 | 怎么更新 |
+|---|---|---|
+| Claude Code | 装 `bundle.json` 里列的插件，并给 lkyx 市场打开自动更新 | Claude Code 启动时自动拉新版本 |
+| Codex、Cursor、OpenCode 等 | 把 skill 软链接到各自的 skills 目录（只链接本机装过的工具） | 每天自动 `git pull`（macOS 用 launchd，Linux 用 cron），软链接指向的内容随之更新 |
+
+代码放在 `~/.lkyx`。卸载：`~/.lkyx/install.sh --uninstall`，Claude Code 插件在 `/plugin` 里卸载。
+
+只想在 Claude Code 里手动装也可以：
+
+```bash
 /plugin marketplace add lkyxuan/lkyx
 /plugin install lkyx@lkyx
-
-# 2. Superpowers（流程里的澄清、计划、TDD 等步骤会用到，可选但推荐）
-/plugin install superpowers@claude-plugins-official
+/plugin install superpowers@lkyx
 ```
 
 然后在每个产品仓库根目录放一份 CLAUDE.md，模板见 [`templates/CLAUDE.md`](templates/CLAUDE.md)，只写这个项目自己的东西（技术栈、怎么跑、怎么测）。
 
 > 如果你已经在 claude.ai 的 skills 里保存过 `prior-art-first`，装了本插件后可以删掉那份，避免两份内容不一致。
 
-## 里面有什么
+## 套装里有什么
+
+清单在 [`bundle.json`](bundle.json)：
+
+- **lkyx**：本仓库的 skill（见下表）
+- **Superpowers**：头脑风暴、写计划、TDD、子 agent 开发，大项目模式会用到
+- **MCP 服务器**：暂时没有
+
+### 往套装里加东西
+
+| 要加的 | 改哪里 |
+|---|---|
+| Claude Code 插件 | `bundle.json` 的 `claude_plugins` 加一项 `"plugin": "名字@市场"`；市场不是 lkyx 或官方的，再加 `"marketplace_repo": "owner/repo"`。也可以像 Superpowers 一样，直接在 `.claude-plugin/marketplace.json` 里登记，变成 `名字@lkyx` |
+| 给其他工具用的 skill 仓库 | `bundle.json` 的 `skill_repos` 加一项 `name`、`repo`、`skills_dir` |
+| MCP 服务器 | 仓库根目录建 `.mcp.json`（格式同 Claude Code 的 `.mcp.json`），lkyx 插件启用时会自动带上 |
+
+改完把 `.claude-plugin/plugin.json` 的 `version` 加一，推到 main。各台电脑会在下次自动更新时装上新加的东西。
+
+## lkyx 自己的 skill
 
 | 路径 | 作用 |
 |---|---|
@@ -49,4 +79,3 @@
 - 想强制每次都走流程：加一个 SessionStart hook，开场提醒使用 `lkyx-workflow`
 - 代码审查、发版、部署等自己的规范，作为新 skill 放进 `skills/`
 - 定期跑一次 `harvest-techniques`，让 `dev-techniques` 越用越贴合自己
-- 改了 skill 后把 `.claude-plugin/plugin.json` 的 `version` 加一，然后在 Claude Code 里 `/plugin marketplace update lkyx`

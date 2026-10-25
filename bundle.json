@@ -1,0 +1,21 @@
+{
+  "_说明": "lkyx 套装清单。install.sh 按这里安装；往套装里加东西只改这个文件（MCP 改 .mcp.json）。",
+  "claude_plugins": [
+    {
+      "plugin": "lkyx@lkyx",
+      "why": "本仓库：开发流程、先搜开源、开发技巧"
+    },
+    {
+      "plugin": "superpowers@lkyx",
+      "why": "头脑风暴、写计划、TDD、子 agent 开发；lkyx 流程的大项目模式会用到"
+    }
+  ],
+  "skill_repos": [
+    {
+      "name": "superpowers",
+      "repo": "https://github.com/obra/superpowers.git",
+      "skills_dir": "skills",
+      "why": "给 Codex、Cursor 等没有插件系统的工具用，和上面的 Claude Code 插件是同一套"
+    }
+  ]
+}
