@@ -61,6 +61,7 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 | `skills/prior-art-first/` | 先搜 GitHub、awesome 列表、包管理器、官方 API，出调研报告再决定复用还是自己写 |
 | `skills/dev-techniques/` | 从我过往对话里挖出来的开发技巧（只收技巧，不收技术选型） |
 | `skills/harvest-techniques/` | 收尾或定期复盘时，从对话里找新的技巧补进 `dev-techniques` |
+| `hooks/` | Claude Code 每次开新会话时提醒：遇到新东西要做，自动走 `lkyx-workflow`，不用你说“用 lkyx” |
 | `templates/CLAUDE.md` | 产品仓库用的 CLAUDE.md 模板 |
 | `docs/notes/` | 这个 harness 自己的设计记录 |
 
@@ -76,6 +77,5 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 
 ## 以后可以加
 
-- 想强制每次都走流程：加一个 SessionStart hook，开场提醒使用 `lkyx-workflow`
 - 代码审查、发版、部署等自己的规范，作为新 skill 放进 `skills/`
 - 定期跑一次 `harvest-techniques`，让 `dev-techniques` 越用越贴合自己
