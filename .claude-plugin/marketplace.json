@@ -8,15 +8,15 @@
     {
       "name": "lkyx",
       "description": "个人开发 harness：先搜开源、轻量计划、做完记一笔，按需调用 Superpowers",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "source": "./"
     },
     {
       "name": "superpowers",
       "description": "Superpowers（obra/superpowers）：头脑风暴、写计划、TDD、子 agent 开发等 skill，lkyx 流程的大项目模式会用到",
       "source": {
-        "source": "github",
-        "repo": "obra/superpowers"
+        "source": "url",
+        "url": "https://github.com/obra/superpowers.git"
       }
     }
   ]

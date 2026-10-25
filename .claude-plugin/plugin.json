@@ -1,11 +1,16 @@
 {
   "name": "lkyx",
   "description": "0xmiracle 的个人开发 harness：先搜开源、轻量计划、做完记一笔，按需调用 Superpowers",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": {
     "name": "lkyxuan"
   },
   "homepage": "https://github.com/lkyxuan/lkyx",
   "repository": "https://github.com/lkyxuan/lkyx",
-  "keywords": ["harness", "workflow", "prior-art", "skills"]
+  "keywords": [
+    "harness",
+    "workflow",
+    "prior-art",
+    "skills"
+  ]
 }
