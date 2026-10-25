@@ -1,0 +1,15 @@
+{
+  "name": "lkyx",
+  "description": "lkyxuan 的个人 Claude Code 插件市场",
+  "owner": {
+    "name": "lkyxuan"
+  },
+  "plugins": [
+    {
+      "name": "lkyx",
+      "description": "个人开发 harness：先搜开源、轻量计划、做完记一笔，按需调用 Superpowers",
+      "version": "0.2.0",
+      "source": "./"
+    }
+  ]
+}
