@@ -98,10 +98,35 @@ AGENT_SKILL_DIRS=(
   "$HOME/.adal/skills"  # AdaL
 )
 
+AGENTS_MD_URL="https://raw.githubusercontent.com/vercel-labs/skills/main/docs/agents.md"
+AGENTS_CACHE="$LKYX_HOME/agents.cache"
+
+# 每次安装/更新时从 vercel-labs/skills 拉最新的 Agent 目录表（MIT），
+# 新出的 Agent 不用改脚本也能支持；拉不到就用上面内置的列表
+refresh_agent_dirs() {
+  local md
+  md="$(curl -fsSL --max-time 20 "$AGENTS_MD_URL" 2>/dev/null)" || return 0
+  python3 -c '
+import re, sys, os
+home = os.path.expanduser("~")
+out = []
+for line in sys.stdin:
+    m = re.match(r"\| (.+?) \| .*? \| .*? \| `(~/[^`]+)` \|", line)
+    if m and "Claude Code" not in m.group(1):
+        out.append(m.group(2).rstrip("/").replace("~", home, 1))
+if len(out) > 20:
+    open(sys.argv[1], "w").write("\n".join(out) + "\n")
+' "$AGENTS_CACHE" <<<"$md" || true
+}
+
 # 只链接本机装过的 Agent：skills 目录的上一级（工具自己的配置目录）存在才算装过
 agent_skill_dirs() {
-  local d
-  for d in "${AGENT_SKILL_DIRS[@]}"; do
+  local d dirs=("${AGENT_SKILL_DIRS[@]}")
+  if [[ -s "$AGENTS_CACHE" ]]; then  # 不用 mapfile：macOS 自带的 bash 3.2 没有
+    dirs=()
+    while IFS= read -r d; do dirs+=("$d"); done <"$AGENTS_CACHE"
+  fi
+  for d in "${dirs[@]}"; do
     if [[ "$d" == "$HOME/.agents/skills" ]]; then
       # Codex、Cline、Zed、Warp、Pi 等共用这个目录
       [[ -d "$HOME/.agents" || -d "$HOME/.codex" || -d "$HOME/.cline" || -d "$HOME/.pi" ]] && echo "$d"
@@ -227,8 +252,8 @@ uninstall() {
 }
 
 case "${1:-}" in
-  --update)    sync_repos; link_skills; setup_claude_code ;;
+  --update)    sync_repos; refresh_agent_dirs; link_skills; setup_claude_code ;;
   --uninstall) uninstall ;;
-  "")          sync_repos; setup_claude_code; link_skills; install_scheduler; log "完成" ;;
+  "")          sync_repos; refresh_agent_dirs; setup_claude_code; link_skills; install_scheduler; log "完成" ;;
   *)           echo "用法: install.sh [--update|--uninstall]"; exit 1 ;;
 esac
