@@ -30,11 +30,85 @@ for item in b.get(sys.argv[2], []):
 EOF
 }
 
-# 各工具的全局 skills 目录：只有检测到这个工具装过（父目录存在）才链接
+# 各 Agent 的全局 skills 目录（来自 vercel-labs/skills 的 docs/agents.md，Claude Code 走插件不在这里）
+AGENT_SKILL_DIRS=(
+  "$HOME/.aider-desk/skills"  # AiderDesk
+  "$HOME/.config/agents/skills"  # Amp
+  "$HOME/.gemini/antigravity/skills"  # Antigravity
+  "$HOME/.gemini/antigravity-cli/skills"  # Antigravity CLI
+  "$HOME/.astrbot/data/skills"  # AstrBot
+  "$HOME/.autohand/skills"  # Autohand Code CLI
+  "$HOME/.augment/skills"  # Augment
+  "$HOME/.bob/skills"  # IBM Bob
+  "$HOME/.openclaw/skills"  # OpenClaw
+  "$HOME/.agents/skills"  # Cline
+  "$HOME/.codeartsdoer/skills"  # CodeArts Agent
+  "$HOME/.codebuddy/skills"  # CodeBuddy
+  "$HOME/.codemaker/skills"  # Codemaker
+  "$HOME/.codestudio/skills"  # Code Studio
+  "$HOME/.commandcode/skills"  # Command Code
+  "$HOME/.continue/skills"  # Continue
+  "$HOME/.snowflake/cortex/skills"  # Cortex Code
+  "$HOME/.config/crush/skills"  # Crush
+  "$HOME/.cursor/skills"  # Cursor
+  "$HOME/.deepagents/agent/skills"  # Deep Agents
+  "$HOME/.config/devin/skills"  # Devin for Terminal
+  "$HOME/.factory/skills"  # Droid
+  "$HOME/.firebender/skills"  # Firebender
+  "$HOME/.forge/skills"  # ForgeCode
+  "$HOME/.gemini/skills"  # Gemini CLI
+  "$HOME/.copilot/skills"  # GitHub Copilot
+  "$HOME/.config/goose/skills"  # Goose
+  "$HOME/.grok/skills"  # Grok Build
+  "$HOME/.hermes/skills"  # Hermes Agent
+  "$HOME/.inferencesh/skills"  # inference.sh
+  "$HOME/.jazz/skills"  # Jazz
+  "$HOME/.junie/skills"  # Junie
+  "$HOME/.iflow/skills"  # iFlow CLI
+  "$HOME/.kilo/skills"  # Kilo Code
+  "$HOME/.config/kimchi/harness/skills"  # Kimchi
+  "$HOME/.kiro/skills"  # Kiro CLI
+  "$HOME/.kode/skills"  # Kode
+  "$HOME/.lingma/skills"  # Lingma
+  "$HOME/.mcpjam/skills"  # MCPJam
+  "$HOME/.minimax/skills"  # MiniMax Code
+  "$HOME/.vibe/skills"  # Mistral Vibe
+  "$HOME/.moxby/skills"  # Moxby
+  "$HOME/.mux/skills"  # Mux
+  "$HOME/.config/opencode/skills"  # OpenCode
+  "$HOME/.openhands/skills"  # OpenHands
+  "$HOME/.ona/skills"  # Ona
+  "$HOME/.posit/assistant/skills"  # Posit Assistant
+  "$HOME/.qoder/skills"  # Qoder
+  "$HOME/.qoder-cn/skills"  # Qoder CN
+  "$HOME/.qwen/skills"  # Qwen Code
+  "$HOME/.reasonix/skills"  # Reasonix
+  "$HOME/.rovodev/skills"  # Rovo Dev
+  "$HOME/.roo/skills"  # Roo Code
+  "$HOME/.tabnine/agent/skills"  # Tabnine CLI
+  "$HOME/.terramind/skills"  # Terramind
+  "$HOME/.tinycloud/skills"  # Tinycloud
+  "$HOME/.trae/skills"  # Trae
+  "$HOME/.trae-cn/skills"  # Trae CN
+  "$HOME/.codeium/windsurf/skills"  # Windsurf
+  "$HOME/.zcode/skills"  # ZCode
+  "$HOME/.zencoder/skills"  # Zencoder
+  "$HOME/.neovate/skills"  # Neovate
+  "$HOME/.pochi/skills"  # Pochi
+  "$HOME/.adal/skills"  # AdaL
+)
+
+# 只链接本机装过的 Agent：skills 目录的上一级（工具自己的配置目录）存在才算装过
 agent_skill_dirs() {
-  [[ -d "$HOME/.codex" || -d "$HOME/.agents" ]] && echo "$HOME/.agents/skills"  # Codex、Cline、Zed、Warp 等共用
-  [[ -d "$HOME/.cursor" ]] && echo "$HOME/.cursor/skills"
-  [[ -d "$HOME/.config/opencode" ]] && echo "$HOME/.config/opencode/skills"
+  local d
+  for d in "${AGENT_SKILL_DIRS[@]}"; do
+    if [[ "$d" == "$HOME/.agents/skills" ]]; then
+      # Codex、Cline、Zed、Warp、Pi 等共用这个目录
+      [[ -d "$HOME/.agents" || -d "$HOME/.codex" || -d "$HOME/.cline" || -d "$HOME/.pi" ]] && echo "$d"
+    elif [[ -d "$(dirname "$d")" ]]; then
+      echo "$d"
+    fi
+  done
   return 0
 }
 

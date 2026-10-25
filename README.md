@@ -19,7 +19,7 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 | 工具 | 怎么装 | 怎么更新 |
 |---|---|---|
 | Claude Code | 装 `bundle.json` 里列的插件，并给 lkyx 市场打开自动更新 | Claude Code 启动时自动拉新版本 |
-| Codex、Cursor、OpenCode 等 | 把 skill 软链接到各自的 skills 目录（只链接本机装过的工具） | 每天自动 `git pull`（macOS 用 launchd，Linux 用 cron），软链接指向的内容随之更新 |
+| Codex、Cursor、Hermes、Gemini CLI、Windsurf 等 60 多个 Agent | 把 skill 软链接到各自的 skills 目录（只链接本机装过的；以后新装的 Agent 会在下次每日更新时自动补上） | 每天自动 `git pull`（macOS 用 launchd，Linux 用 cron），软链接指向的内容随之更新 |
 
 代码放在 `~/.lkyx`。卸载：`~/.lkyx/install.sh --uninstall`，Claude Code 插件在 `/plugin` 里卸载。
 
