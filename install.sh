@@ -193,7 +193,14 @@ setup_claude_code() {
   claude plugin marketplace add lkyxuan/lkyx >/dev/null 2>&1 || true
   while IFS=$'\t' read -r plugin repo; do
     [[ -z "$repo" ]] || claude plugin marketplace add "$repo" >/dev/null 2>&1 || true
-    if claude plugin install "$plugin" >/dev/null 2>&1; then log "Claude Code：已装 $plugin"; else log "Claude Code：$plugin 安装失败，稍后可手动 /plugin install"; fi
+    local out
+    if out=$(claude plugin install "$plugin" 2>&1); then
+      log "Claude Code：已装 $plugin"
+    else
+      log "Claude Code：$plugin 安装失败，原因："
+      printf '%s\n' "$out" | tail -5 | sed 's/^/    /'
+      log "  可以稍后在 Claude Code 里手动 /plugin install $plugin"
+    fi
   done < <(bundle claude_plugins)
   # 在用户设置里给 lkyx 市场打开 autoUpdate，Claude Code 启动时会自动拉新版本
   python3 - "$HOME/.claude/settings.json" <<'EOF'
