@@ -8,6 +8,11 @@
     {
       "plugin": "superpowers@lkyx",
       "why": "头脑风暴、写计划、TDD、子 agent 开发；lkyx 流程的大项目模式会用到"
+    },
+    {
+      "plugin": "hyperframes@hyperframes",
+      "marketplace_repo": "heygen-com/hyperframes",
+      "why": "HTML 转视频（HeyGen 开源），做视频剪辑时用"
     }
   ],
   "skill_repos": [
@@ -17,5 +22,10 @@
       "skills_dir": "skills",
       "why": "给 Codex、Cursor 等没有插件系统的工具用，和上面的 Claude Code 插件是同一套"
     }
-  ]
+  ],
+  "mcp_servers": {
+    "_说明": "MCP 写在仓库根目录 .mcp.json，lkyx 插件启用时 Claude Code 自动加载",
+    "context7": "查各种库的最新文档，配合先搜开源用",
+    "playwright": "操作浏览器做端到端验证、抓页面"
+  }
 }

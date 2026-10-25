@@ -41,7 +41,8 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 
 - **lkyx**：本仓库的 skill（见下表）
 - **Superpowers**：头脑风暴、写计划、TDD、子 agent 开发，大项目模式会用到
-- **MCP 服务器**：暂时没有
+- **HyperFrames**：HTML 转视频，做视频剪辑时用
+- **MCP 服务器**（`.mcp.json`）：Context7 查库的最新文档，Playwright 操作浏览器
 
 ### 往套装里加东西
 
