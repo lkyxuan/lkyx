@@ -1,6 +1,6 @@
 ---
 name: prior-art-first
-description: Use when the user proposes a product idea, feature, tool or crawler to build: search GitHub and public sources for existing open-source solutions before writing any code.
+description: "Use when the user proposes a product idea, feature, tool or crawler to build. Search GitHub and public sources for existing open-source solutions before writing any code."
 ---
 
 # 先搜开源，再动手（Prior Art First）
