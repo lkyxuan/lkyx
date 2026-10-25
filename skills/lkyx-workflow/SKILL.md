@@ -32,6 +32,7 @@ description: Use whenever the user describes something new to build (a product i
 - 默认：直接实现，写到能跑并验证（跑一遍、给出结果）。
 - 大项目或用户要求严谨时：用 Superpowers 的 `test-driven-development`、`subagent-driven-development` 或 `executing-plans`。
 - 原型 / 一次性脚本不强制 TDD、不强制 worktree。
+- 做的过程中和交付时，按 `dev-techniques` 里的技巧来：复用已有环境、测试数据用完就清、不悄悄降级、真实环境端到端验证、交付第一句说成没成。
 
 ### 5. 做完记一笔
 在项目的 `docs/notes/<YYYY-MM-DD>-<主题>.md` 写几行（没有目录就建）：
@@ -45,6 +46,8 @@ description: Use whenever the user describes something new to build (a product i
 ```
 
 下次同类需求先翻 `docs/notes/`，避免重复调研。
+
+收尾时顺手用 `harvest-techniques` 扫一遍这次对话，有值得沉淀的技巧就提给用户。
 
 ## 轻重怎么判断
 | 情况 | 模式 |

@@ -29,6 +29,8 @@
 |---|---|
 | `skills/lkyx-workflow/` | 总入口：规定步骤顺序和轻重，决定什么时候调用哪个 skill |
 | `skills/prior-art-first/` | 先搜 GitHub、awesome 列表、包管理器、官方 API，出调研报告再决定复用还是自己写 |
+| `skills/dev-techniques/` | 从我过往对话里挖出来的开发技巧（只收技巧，不收技术选型） |
+| `skills/harvest-techniques/` | 收尾或定期复盘时，从对话里找新的技巧补进 `dev-techniques` |
 | `templates/CLAUDE.md` | 产品仓库用的 CLAUDE.md 模板 |
 | `docs/notes/` | 这个 harness 自己的设计记录 |
 
@@ -46,4 +48,5 @@
 
 - 想强制每次都走流程：加一个 SessionStart hook，开场提醒使用 `lkyx-workflow`
 - 代码审查、发版、部署等自己的规范，作为新 skill 放进 `skills/`
+- 定期跑一次 `harvest-techniques`，让 `dev-techniques` 越用越贴合自己
 - 改了 skill 后把 `.claude-plugin/plugin.json` 的 `version` 加一，然后在 Claude Code 里 `/plugin marketplace update lkyx`
