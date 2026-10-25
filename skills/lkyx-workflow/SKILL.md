@@ -21,7 +21,7 @@ description: Use whenever the user describes something new to build (a product i
 - 没装 Superpowers 时：自己按上面的方式问清楚即可。
 
 ### 2. 先搜开源（必做）
-调用 `prior-art-first`。拿到调研报告后**停下来等用户选**：直接用 / 改造 / 自己写。
+调用 `prior-art-first`：先确认哪些搜索渠道能用，再并行搜仓库、本机已装的 skill 和 MCP、包管理器、GitHub、网页，给候选打分。拿到调研报告后**停下来等用户选**：直接用 / 改造 / 自己写。
 用户明确说"跳过调研"时才可以省略。
 
 ### 3. 一页小计划
@@ -29,7 +29,7 @@ description: Use whenever the user describes something new to build (a product i
 - 大项目：调用 Superpowers 的 `writing-plans`，计划写进 `docs/plans/`。
 
 ### 4. 动手做
-- 默认：按选定的最终方案一次做完整，不先做"最小能跑版本"再迭代。做完自己验收（跑一遍、给出截图或运行结果）再交付。
+- 默认：按选定的最终方案一次做完整，不先做"最小能跑版本"再迭代。做完按 `verification-loop` 跑一遍验收清单（构建、类型、lint、测试、密钥扫描、看 diff、真实跑一遍），附上验收报告再交付。
 - 大项目或用户要求严谨时：用 Superpowers 的 `test-driven-development`、`subagent-driven-development` 或 `executing-plans`。
 - 个人工具、一次性脚本不强制 TDD、不强制 worktree。
 - 做的过程中和交付时，按 `dev-techniques` 里的技巧来：复用已有环境、测试数据用完就清、不悄悄降级、自己验收完再交付、卡住两三次就换路、交付第一句说成没成。
