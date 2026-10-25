@@ -29,7 +29,7 @@ description: Use whenever the user describes something new to build (a product i
 - 大项目：调用 Superpowers 的 `writing-plans`，计划写进 `docs/plans/`。
 
 ### 4. 动手做
-- 默认：按选定的最终方案一次做完整，不先做"最小能跑版本"再迭代。做完按 `verification-loop` 跑一遍验收清单（构建、类型、lint、测试、密钥扫描、看 diff、真实跑一遍），附上验收报告再交付。
+- 默认：按选定的最终方案一次做完整，不先做"最小能跑版本"再迭代。做完自己真实跑一遍，附上截图、预览链接或运行输出再交付（`dev-techniques` 第 6 条）。
 - 大项目或用户要求严谨时：用 Superpowers 的 `test-driven-development`、`subagent-driven-development` 或 `executing-plans`。
 - 个人工具、一次性脚本不强制 TDD、不强制 worktree。
 - 做的过程中和交付时，按 `dev-techniques` 里的技巧来：复用已有环境、测试数据用完就清、不悄悄降级、自己验收完再交付、卡住两三次就换路、交付第一句说成没成。

@@ -60,7 +60,6 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 |---|---|
 | `skills/lkyx-workflow/` | 总入口：规定步骤顺序和轻重，决定什么时候调用哪个 skill |
 | `skills/prior-art-first/` | 先确认哪些搜索渠道能用，再并行搜仓库、本机 skill/MCP、包管理器、GitHub、网页和官方 API，给候选打分，决定直接用 / 包一层 / 组合 / 自己写 |
-| `skills/verification-loop/` | 交付前的验收清单：构建、类型、lint、测试、密钥扫描、看 diff、真实跑一遍，输出验收报告 |
 | `skills/dev-techniques/` | 从我过往对话里挖出来的开发技巧（只收技巧，不收技术选型） |
 | `skills/harvest-techniques/` | 收尾或定期复盘时，从对话里挖技巧：先作为带置信度和证据的候选记进 `docs/instincts.md`，够强且在 2 个以上项目出现过再升级进 `dev-techniques` |
 | `hooks/` | 开新会话时提醒自动走 `lkyx-workflow`，不用你说“用 lkyx”；编辑文件前检查上下文大小，快满时提醒在阶段分界处手动 `/compact`（`COMPACT_CONTEXT_THRESHOLD=0` 关闭） |
@@ -76,7 +75,7 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 | 先搜开源 | `prior-art-first` | `prior-art-first` |
 | 计划 | 对话里 5–10 行 | Superpowers `writing-plans` |
 | 实现 | 直接按最终方案写完整 | Superpowers TDD / subagent-driven-development |
-| 验收 | `verification-loop` | `verification-loop` |
+| 验收 | 真实跑一遍，给截图或预览链接；代码检查交给 GitHub | 同左 |
 | 记一笔 | `docs/notes/` | `docs/notes/` |
 
 ## 以后可以加
@@ -86,4 +85,4 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 
 ## 借鉴
 
-`prior-art-first` 的搜索流程、`verification-loop`、上下文提醒 hook 和 `harvest-techniques` 的置信度规则参考了 [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)（MIT）的 `search-first`、`verification-loop`、`strategic-compact` 和 `continuous-learning-v2`，按 lkyx 的轻量流程改写过。
+`prior-art-first` 的搜索流程、上下文提醒 hook 和 `harvest-techniques` 的置信度规则参考了 [Everything Claude Code](https://github.com/affaan-m/everything-claude-code)（MIT）的 `search-first`、`strategic-compact` 和 `continuous-learning-v2`，按 lkyx 的轻量流程改写过。
