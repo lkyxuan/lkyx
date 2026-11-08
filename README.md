@@ -42,6 +42,7 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 - **lkyx**：本仓库的 skill（见下表）
 - **Superpowers**：头脑风暴、写计划、TDD、子 agent 开发，大项目模式会用到
 - **HyperFrames**：HTML 转视频，做视频剪辑时用
+- **mstack**（[lkyxuan/mstack](https://github.com/lkyxuan/mstack)）：基于 pstack 的严谨流程，只在输入 `/mstack` 时用，适合现有代码上的硬活（难查的 bug、性能、大重构、长时间无人值守）。整个仓库是一个 skill，做不成插件，所以 Claude Code 也走软链接，装在 `~/.claude/skills/mstack`。claude.ai 上要用，得手动把仓库打成 zip 上传
 - **MCP 服务器**（`.mcp.json`）：Context7 查库的最新文档，Playwright 操作浏览器
 
 ### 往套装里加东西
@@ -49,7 +50,7 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 | 要加的 | 改哪里 |
 |---|---|
 | Claude Code 插件 | `bundle.json` 的 `claude_plugins` 加一项 `"plugin": "名字@市场"`；市场不是 lkyx 或官方的，再加 `"marketplace_repo": "owner/repo"`。也可以像 Superpowers 一样，直接在 `.claude-plugin/marketplace.json` 里登记，变成 `名字@lkyx` |
-| 给其他工具用的 skill 仓库 | `bundle.json` 的 `skill_repos` 加一项 `name`、`repo`、`skills_dir` |
+| 给其他工具用的 skill 仓库 | `bundle.json` 的 `skill_repos` 加一项 `name`、`repo`、`skills_dir`。`skills_dir` 下直接有 `SKILL.md`（比如填 `"."`）时，整个目录算一个 skill，用 `name` 命名。做不成 Claude Code 插件、又想在 Claude Code 里用的，再加 `"claude_code": true`，会链接进 `~/.claude/skills` |
 | MCP 服务器 | 仓库根目录建 `.mcp.json`（格式同 Claude Code 的 `.mcp.json`），lkyx 插件启用时会自动带上 |
 
 改完把 `.claude-plugin/plugin.json` 的 `version` 加一，推到 main。各台电脑会在下次自动更新时装上新加的东西。
@@ -77,6 +78,8 @@ curl -fsSL https://raw.githubusercontent.com/lkyxuan/lkyx/main/install.sh | bash
 | 实现 | 直接按最终方案写完整 | Superpowers TDD / subagent-driven-development |
 | 验收 | 真实跑一遍，给截图或预览链接；代码检查交给 GitHub | 同左 |
 | 记一笔 | `docs/notes/` | `docs/notes/` |
+
+Superpowers 和 mstack 都是重流程，一个任务只选一套：新东西还没想清楚用 Superpowers，现有代码上的硬活用 `/mstack`。细则见 `skills/lkyx-workflow/` 的“Superpowers 和 mstack 怎么分工”。
 
 ## 以后可以加
 

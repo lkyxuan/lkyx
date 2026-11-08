@@ -21,6 +21,13 @@
       "repo": "https://github.com/obra/superpowers.git",
       "skills_dir": "skills",
       "why": "给 Codex、Cursor 等没有插件系统的工具用，和上面的 Claude Code 插件是同一套"
+    },
+    {
+      "name": "mstack",
+      "repo": "https://github.com/lkyxuan/mstack.git",
+      "skills_dir": ".",
+      "claude_code": true,
+      "why": "严谨的大项目流程（基于 pstack），只在输入 /mstack 时用。整个仓库是一个 skill，做不成插件，所以 Claude Code 也走软链接"
     }
   ],
   "mcp_servers": {

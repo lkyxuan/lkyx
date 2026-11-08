@@ -53,9 +53,22 @@ description: Use whenever the user describes something new to build (a product i
 | 情况 | 模式 |
 |---|---|
 | 一个下午能做完、个人用 | 轻量（默认） |
-| 多人协作、要上线、要长期维护 | 重：启用 Superpowers 全流程；需要规格文档时再考虑 Spec Kit / OpenSpec |
+| 多人协作、要上线、要长期维护 | 重：启用 Superpowers 全流程或 mstack（见下一节）；需要规格文档时再考虑 Spec Kit / OpenSpec |
 
 拿不准时用轻量模式，并在第 3 步的小计划里说一句"如果要做大，可以切到完整流程"。
+
+## Superpowers 和 mstack 怎么分工
+两套都是重流程，一个任务只用一套当主流程，不要叠在一起跑（两边都想管待办列表、审批和回复格式）。
+
+| 任务 | 用哪套 |
+|---|---|
+| 新东西，还没想清楚要做成什么样 | Superpowers：`brainstorming` → `writing-plans` → 按计划实现 |
+| 现有代码上的硬活：难查的 bug、性能、大重构或迁移、要放着跑很久的任务、"真的没问题吗"式的复查 | mstack |
+
+- mstack 只在用户输入 `/mstack` 时启用。这里只能**建议**用户输入 `/mstack`，不要自己加载它。
+- 用户输入了 `/mstack`，就按 mstack 走，本文件的流程让开（`prior-art-first` 也交给 mstack 自己判断）。
+- mstack 里的单个 skill 可以单独用，开销小得多：`/mstack how ...` 讲清一段代码怎么工作，`/mstack interrogate` 对方案做对抗式审查，`/mstack unslop` 把文字改干净。
+- 先用 Superpowers 写出设计和计划，再把计划文件交给 `/mstack` 执行，也可以，但是一前一后，不是同时。
 
 ## 原则
 - 用户在对话里的指示优先于这里的流程。

@@ -14,6 +14,7 @@ VENDOR_DIR="$LKYX_HOME/vendor"
 LOG_FILE="$LKYX_HOME/update.log"
 PLIST="$HOME/Library/LaunchAgents/com.lkyx.update.plist"
 CRON_TAG="# lkyx-auto-update"
+CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
 
 log() { echo "[lkyx] $*"; }
 
@@ -26,7 +27,8 @@ for item in b.get(sys.argv[2], []):
     if sys.argv[2] == "claude_plugins":
         print(item["plugin"], item.get("marketplace_repo", ""), sep="\t")
     else:
-        print(item["name"], item["repo"], item.get("skills_dir", "skills"), sep="\t")
+        print(item["name"], item["repo"], item.get("skills_dir", "skills"),
+              "1" if item.get("claude_code") else "0", sep="\t")
 EOF
 }
 
@@ -148,43 +150,72 @@ pull_or_clone() {
 
 # 本仓库和清单里的第三方 skill 仓库（vendor/ 不进 git）
 sync_repos() {
-  local name repo dir
+  local name repo dir cc
   pull_or_clone "$REPO_URL" "$LKYX_HOME"
-  while IFS=$'\t' read -r name repo dir; do
+  while IFS=$'\t' read -r name repo dir cc; do
     pull_or_clone "$repo" "$VENDOR_DIR/$name"
   done < <(bundle skill_repos)
 }
 
-# 所有要链接的 skill 目录：本仓库 skills/ + 每个第三方仓库的 skills_dir
-skill_sources() {
-  local name repo dir
-  printf '%s\n' "$LKYX_HOME"/skills/*/
-  while IFS=$'\t' read -r name repo dir; do
-    printf '%s\n' "$VENDOR_DIR/$name/$dir"/*/
+# 第三方仓库里的 skill，每行“名字<tab>路径”。
+# skills_dir 下直接有 SKILL.md（比如 "."）时，整个目录就是一个 skill，用清单里的 name 命名；
+# 否则 skills_dir 下每个带 SKILL.md 的子目录各是一个 skill。
+# 参数 claude：只列 claude_code 为 true 的仓库（链接进 ~/.claude/skills 用）
+repo_skills() {
+  local name repo dir cc base skill
+  while IFS=$'\t' read -r name repo dir cc; do
+    [[ "${1:-}" != claude || "$cc" == 1 ]] || continue
+    base="$VENDOR_DIR/$name/$dir"
+    base="${base%/.}"
+    if [[ -f "$base/SKILL.md" ]]; then
+      printf '%s\t%s\n' "$name" "$base"
+    else
+      for skill in "$base"/*/; do
+        [[ -f "$skill/SKILL.md" ]] && printf '%s\t%s\n' "$(basename "$skill")" "${skill%/}"
+      done
+    fi
   done < <(bundle skill_repos)
 }
 
+# 所有要链接给其他 Agent 的 skill：本仓库 skills/ + 清单里的第三方仓库
+skill_sources() {
+  local skill
+  for skill in "$LKYX_HOME"/skills/*/; do
+    [[ -f "$skill/SKILL.md" ]] && printf '%s\t%s\n' "$(basename "$skill")" "${skill%/}"
+  done
+  repo_skills
+}
+
+# link_into <目标目录>，从标准输入读“名字<tab>路径”
+link_into() {
+  local dir="$1" name src target
+  mkdir -p "$dir"
+  while IFS=$'\t' read -r name src; do
+    [[ -n "$name" ]] || continue
+    target="$dir/$name"
+    if [[ -e "$target" && ! -L "$target" ]]; then
+      log "跳过 $target：已有同名目录，不是 lkyx 的链接"
+      continue
+    fi
+    ln -sfn "$src" "$target"
+  done
+  # 清理已从清单或仓库删掉的 skill 留下的断链
+  for target in "$dir"/*; do
+    [[ -L "$target" && ! -e "$target" && "$(readlink "$target")" == "$LKYX_HOME"/* ]] && rm -f "$target"
+  done
+  log "已链接到 $dir"
+}
+
 link_skills() {
-  local dir skill name target
+  local dir
   while read -r dir; do
     [[ -n "$dir" ]] || continue
-    mkdir -p "$dir"
-    while read -r skill; do
-      [[ -f "$skill/SKILL.md" ]] || continue
-      name="$(basename "$skill")"
-      target="$dir/$name"
-      if [[ -e "$target" && ! -L "$target" ]]; then
-        log "跳过 $target：已有同名目录，不是 lkyx 的链接"
-        continue
-      fi
-      ln -sfn "${skill%/}" "$target"
-    done < <(skill_sources)
-    # 清理已从清单或仓库删掉的 skill 留下的断链
-    for target in "$dir"/*; do
-      [[ -L "$target" && ! -e "$target" && "$(readlink "$target")" == "$LKYX_HOME"/* ]] && rm -f "$target"
-    done
-    log "已链接到 $dir"
+    link_into "$dir" < <(skill_sources)
   done < <(agent_skill_dirs)
+  # Claude Code 的 skill 一般走插件；没法做成插件的（claude_code: true）链接进 ~/.claude/skills
+  if [[ -d "$HOME/.claude" && -n "$(repo_skills claude)" ]]; then
+    link_into "$CLAUDE_SKILLS_DIR" < <(repo_skills claude)
+  fi
 }
 
 setup_claude_code() {
@@ -250,7 +281,7 @@ uninstall() {
     for target in "$dir"/*; do
       [[ -L "$target" && "$(readlink "$target")" == "$LKYX_HOME"/* ]] && rm -f "$target"
     done
-  done < <(agent_skill_dirs)
+  done < <(agent_skill_dirs; echo "$CLAUDE_SKILLS_DIR")
   if [[ -f "$PLIST" ]]; then launchctl unload "$PLIST" 2>/dev/null || true; rm -f "$PLIST"; fi
   if command -v crontab >/dev/null 2>&1; then
     { crontab -l 2>/dev/null | grep -v "$CRON_TAG" || true; } | crontab -
